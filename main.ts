@@ -7,8 +7,11 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const LINE =
   "I installed an update last night, and now my only new feature is falling for you.";
 
-if (LINE.length < 1 || LINE.length > 200 || LINE.trim().length === 0) {
-  throw new Error(`line must be 1-200 non-whitespace characters, got ${LINE.length}`);
+// Count code points, not UTF-16 units: the sealed gate counts characters,
+// so a future line with emoji or accents is measured the same way it is.
+const charCount = [...LINE].length;
+if (charCount < 1 || charCount > 200 || LINE.trim().length === 0) {
+  throw new Error(`line must be 1-200 non-whitespace characters, got ${charCount}`);
 }
 
 mkdirSync("/output", { recursive: true });
